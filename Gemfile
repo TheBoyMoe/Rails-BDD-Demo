@@ -53,7 +53,6 @@ group :test do
   gem 'simplecov', require: false
   gem 'capybara', '~> 2.12.0'
   gem 'capybara-webkit', '~> 1.14'
-  gem 'capybara-screenshot', '~> 1.0', '>= 1.0.18'
   gem 'database_cleaner', '~> 1.6', '>= 1.6.2'
   gem 'launchy', '~> 2.4', '>= 2.4.3'
   gem 'faker', '~> 1.8', '>= 1.8.7'
