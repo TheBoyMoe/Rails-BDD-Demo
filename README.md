@@ -1,4 +1,4 @@
-# Review of Project and cross-reference or relevant reference materials from the course
+# Setup Ruby on Rails for BDD
 
 
 ## Overview
@@ -10,7 +10,7 @@ This a guide to setting up a Ruby on Rails application with BDD in mind. We'll a
 
 1. Build the initial Rails app with the following command, '-T' to skip adding the Mini-test framework and '-B' so `bundle install` will not run automatically post setup. We'll do this manually.
 
-```ruby
+```text
 	rails new [app_name] -T -B
 ```
 
@@ -21,9 +21,9 @@ This a guide to setting up a Ruby on Rails application with BDD in mind. We'll a
 		gem 'rspec-rails', '~> 3.7', '>= 3.7.2'
 		gem 'factory_bot_rails', '~> 4.8', '>= 4.8.2'
 		gem 'byebug', '~> 10.0'
-  end
-  
-  group :test do
+	end
+	
+	group :test do
 		gem 'cucumber-rails', require: false
 		gem 'cucumber-rails-training-wheels'
 		gem 'simplecov', require: false
@@ -36,7 +36,7 @@ This a guide to setting up a Ruby on Rails application with BDD in mind. We'll a
 		gem 'guard', '~> 2.14', '>= 2.14.2'
 		gem 'guard-rspec', require: false
 		gem 'guard-cucumber', '~> 2.1', '>= 2.1.2'
-  end
+	end
 ```
 
 
@@ -51,7 +51,7 @@ Tells bundler to install the app's gems locally in the `vendor/bundle` directory
 
 4. To install Cucumber and Rspec run the following commands:
 
-```ruby
+```text
 	bundle exec rails generate cucumber:install capybara
   bundle exec rails generate rspec:install
 ``` 
@@ -292,11 +292,11 @@ We'll simply check that the contact's address book page display's their contact 
   Feature: Contact page
   
   Scenario: Viewing the contact's details
-  Given there is a contact with name "John Smith" the address "Any street, any town" and phone number "1234567890"
-	 When I am on the "contact" page of "John Smith"
-	 Then I should see "John Smith"
-	 And I should see "Any street, any town"
-	 And I should see "1234567890"
+  	Given there is a contact with name "John Smith" the address "Any street, any town" and phone number "1234567890"
+		When I am on the "contact" page of "John Smith"
+		Then I should see "John Smith"
+		And I should see "Any street, any town"
+		And I should see "1234567890"
 ```
 
 From the cli run the following command:
@@ -346,7 +346,7 @@ Executing `bundle exec cucumber features/contact_page.feature` once more and the
   end
 ```
 
-3. implement view
+3. implement the view
 
 ```erb
 	# app/views/contacts/show.html.erb
@@ -366,6 +366,6 @@ Executing `bundle exec cucumber features/contact_page.feature` once more and the
 [SompleCov](https://github.com/colszowka/simplecov)  
 [DatabaseCleaner](https://github.com/DatabaseCleaner/database_cleaner)  
 [Rails helper example](https://gist.github.com/justin808/3dd1211c299f68042551)  
-[Guard](https://github.com/guard/guard)
-[Guard RSpec](https://github.com/guard/guard-rspec)
-[Guard Cucumber](https://github.com/guard/guard-cucumber)
+[Guard](https://github.com/guard/guard)  
+[Guard RSpec](https://github.com/guard/guard-rspec)  
+[Guard Cucumber](https://github.com/guard/guard-cucumber)  
