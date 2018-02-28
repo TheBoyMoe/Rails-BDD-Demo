@@ -8,11 +8,13 @@ This a guide to setting up a Ruby on Rails application with BDD in mind. We'll a
 
 ## Setup and Configuration
 
-1. Build the initial Rails app with the following command, '-T' to skip adding the Mini-test framework and '-B' so `bundle install` will not run automatically post setup. We'll do this manually.
+1. Build the initial Rails app with the following command:
 
 ```text
 rails new [app_name] -T -B
 ```
+
+'-T' to skip adding the Mini-test framework and '-B' so `bundle install` will not run automatically post setup. We'll do this manually.
 
 2. Add the following gems to the app's Gemfile(configuration steps are covered later):
 
@@ -25,7 +27,6 @@ end
 
 group :test do
 	gem 'cucumber-rails', require: false
-	gem 'cucumber-rails-training-wheels'
 	gem 'simplecov', require: false
 	gem 'capybara', '~> 2.12.0'
 	gem 'capybara-webkit', '~> 1.14'
@@ -62,7 +63,7 @@ The `cucumber:install` and `rspec:install` commands will generate the cucumber a
 ```ruby
 bundle exec rails generate cucumber_rails_training_wheels:install
 ``` 
-to generate a basic `web_steps.rb` file to get you started with Cucumber testing(recommended not be used in production apps). 
+to generate a basic `web_steps.rb` file to get you started with Cucumber testing(not recommended for production apps). 
 
 Since we're using a Rails app, load Capybara via `spec/rails_helper.rb` by adding the following line:
 
@@ -109,7 +110,13 @@ To use a different javascript driver, such as webkit (requires the capybara-webk
  
 ```ruby
 Capybara.javascript_driver = :webkit
-``` 
+```
+
+The capybara-webkit gem needs the Qt toolchain (including qmake and the webkit library and header files) to be installed. This will vary depending on your OS. For Ubnutu 12.0.4 and above, execute the following command from the cli
+
+```text
+sudo apt-get install libqtwebkit-dev
+```
 
 To use javascript in you Cucumber scenarios, tag your scenarios with the `@javascript` tag.
 
@@ -157,7 +164,7 @@ World(FactoryBot::Syntax::Methods)
 ```
 
 
-8. Add the following code BEFORE ANYTHING ELSE ON LINE ONE of spec/spec_helper.rb(for RSpec) and features/support/env.rb (for Cucumber):
+8. Add the following code BEFORE ANYTHING ELSE ON LINE ONE of `spec/spec_helper.rb` (for RSpec) and `features/support/env.rb` (for Cucumber):
 
 ```ruby
 require 'simplecov'
@@ -208,8 +215,18 @@ rails db:migrate
 rails db:test:prepare 
 ```
 
+12. (Optional) Add the following lines to your `rspec` file to configure how your specs are run.
 
-12. (Optional)We can automate Cucumber and RSpec tests with the guard, guard-rspec and guard-cucumber gems. Guard watches your files and automatically runs your specs when ever they are modified.
+```text
+--format documentation
+--order rand
+--color
+```
+
+The first line ensures that the description of the passing/failing test is printed to the screen instead of the usual 'F' or '.'. The following two lines ensure your tests are executed in random order and the results are in color.
+
+
+13. (Optional)We can automate Cucumber and RSpec tests with the guard, guard-rspec and guard-cucumber gems. Guard watches your files and automatically runs your specs when ever they are modified.
 
 First, generate the guard file by running the following command at the command prompt:
 
