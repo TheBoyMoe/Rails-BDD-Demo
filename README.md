@@ -112,6 +112,12 @@ To use a different javascript driver, such as webkit (requires the capybara-webk
 Capybara.javascript_driver = :webkit
 ```
 
+and add the following line to `spec/rails_helper.rb`
+
+```ruby
+require 'capybara-webkit'
+```
+
 The capybara-webkit gem needs the Qt toolchain (including qmake and the webkit library and header files) to be installed. This will vary depending on your OS. For Ubnutu 12.0.4 and above, execute the following command from the cli
 
 ```text
@@ -151,11 +157,18 @@ end
 Now you can use matchers such as `validates_presence_of` to test your models.
 
 
-7. In order to use Factory Bot factories in our specs, add the following line to `spec/rails_helper.rb` in the `RSpec.config` code block
+7. In order to use Factory Bot factories in our specs, add the following line to `spec/rails_helper.rb` 
+
+```ruby
+require 'factory_bot_rails'
+```
+
+and in the `RSpec.config` code block add:
 
 ```ruby
 config.include FactoryBot::Syntax::Methods
 ```
+
 
 For Cucumber add the following line to `features/support/env.rb`
 
@@ -240,6 +253,12 @@ To add the required Cucumber configuration to the Guardfile and run guard, execu
 bundle exec guard init cucumber
 bundle exec guard # start guard
 ```
+
+14. To identify which specs are running particularly slowly, enable the following line in `rspec/spec_helper.rb` in the `RSpec.config block`. The current setting will show the 10 slowest specs.
+
+```ruby
+config.profile_examples = 10
+``` 
 
 
 ## Check RSpec configuration
