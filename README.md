@@ -62,7 +62,11 @@ The `cucumber:install` and `rspec:install` commands will generate the cucumber a
 
 ```ruby
 bundle exec rails generate cucumber_rails_training_wheels:install
-``` 
+```
+
+
+
+
 to generate a basic `web_steps.rb` file to get you started with Cucumber testing(not recommended for production apps). 
 
 Since we're using a Rails app, load Capybara via `spec/rails_helper.rb` by adding the following line:
@@ -170,14 +174,30 @@ config.include FactoryBot::Syntax::Methods
 ```
 
 
-For Cucumber add the following line to `features/support/env.rb`
+For Cucumber add the following lines to `features/support/env.rb`
 
 ```ruby
+require 'factory_bot_rails'
+
 World(FactoryBot::Syntax::Methods)
 ```
 
 
-8. Add the following code BEFORE ANYTHING ELSE ON LINE ONE of `spec/spec_helper.rb` (for RSpec) and `features/support/env.rb` (for Cucumber):
+8. To ensure that any support files are available to RSpec and Cucumber add the following lines to `spec/rails_helper.rb` and `features/support/env.rb`
+
+
+```ruby
+# spec/rails_helper.rb
+#  autoload files in the support/ directory
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
+
+# features/support/env.rb
+Dir['../../spec/factories/*.rb'].each {|file| require_relative file }
+Dir[Rails.root.join('spec/support/matchers/*.rb')].each { |file| require file } 
+```
+
+9. Add the following code BEFORE ANYTHING ELSE ON LINE ONE of `spec/spec_helper.rb` (for RSpec) and `features/support/env.rb` (for Cucumber):
 
 ```ruby
 require 'simplecov'
@@ -187,7 +207,7 @@ SimpleCov.start 'rails'
 SimpleCov is a code coverage analysis tool. It provides overall coverage of all tests, including Cucumber features and RSpec tests, caching and merging results when generating reports. You can view coverage results by opening `coverage/index.html`. You may want to add the `coverage` folder to .gitignore.
 
 
-9. We'll use the DatabaseCleaner gem to ensure that our database is in a clean state in between tests. To configure DatabaseCleaner with regards to RSpec, add the following strategy to the `RSpec.config` block in `spec/rails_helper.rb`.
+10. We'll use the DatabaseCleaner gem to ensure that our database is in a clean state in between tests. To configure DatabaseCleaner with regards to RSpec, add the following strategy to the `RSpec.config` block in `spec/rails_helper.rb`.
 
 ```ruby
 config.use_transactional_fixtures = false
@@ -218,17 +238,17 @@ Set `config.use_transactional_fixtures` to `false`
 Cucumber automatically configures the appropriate strategy to incorporate DatabaseCleaner and adds the appropriate code to `features/support/env.rb`.
 
 
-10. To enable interactive debugging, add `require 'byebug'` to `spec/rails_helper.rb`. 
+11. To enable interactive debugging, add `require 'byebug'` to `spec/rails_helper.rb`. 
 
 
-11. Prepare the test base, run the first time or when the schema changes
+12. Prepare the test base, run the first time or when the schema changes
 
 ```text
 rails db:migrate
 rails db:test:prepare 
 ```
 
-12. (Optional) Add the following lines to your `rspec` file to configure how your specs are run.
+13. (Optional) Add the following lines to your `rspec` file to configure how your specs are run.
 
 ```text
 --format documentation
@@ -239,7 +259,7 @@ rails db:test:prepare
 The first line ensures that the description of the passing/failing test is printed to the screen instead of the usual 'F' or '.'. The following two lines ensure your tests are executed in random order and the results are in color.
 
 
-13. (Optional)We can automate Cucumber and RSpec tests with the guard, guard-rspec and guard-cucumber gems. Guard watches your files and automatically runs your specs when ever they are modified.
+14. (Optional)We can automate Cucumber and RSpec tests with the guard, guard-rspec and guard-cucumber gems. Guard watches your files and automatically runs your specs when ever they are modified.
 
 First, generate the guard file by running the following command at the command prompt:
 
@@ -254,7 +274,7 @@ bundle exec guard init cucumber
 bundle exec guard # start guard
 ```
 
-14. To identify which specs are running particularly slowly, enable the following line in `rspec/spec_helper.rb` in the `RSpec.config block`. The current setting will show the 10 slowest specs.
+15. To identify which specs are running particularly slowly, enable the following line in `rspec/spec_helper.rb` in the `RSpec.config block`. The current setting will show the 10 slowest specs.
 
 ```ruby
 config.profile_examples = 10
