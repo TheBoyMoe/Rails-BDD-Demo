@@ -201,7 +201,17 @@ Dir[Rails.root.join('spec/support/matchers/*.rb')].each { |file| require file }
 
 ```ruby
 require 'simplecov'
-SimpleCov.start 'rails'
+```
+
+Add `.simplecov` file to the root of your project. The `add_filter` option tells simplecov which files to exclude from coverage.
+
+```ruby
+SimpleCov.start 'rails' do
+	# first two options are for apps including the devise gem
+	add_filter "app/controllers/registrations_controller.rb"
+	add_filter "app/mailers/application_mailer.rb"
+	add_filter "app/helpers/devise_helper.rb"
+end
 ```
 
 SimpleCov is a code coverage analysis tool. It provides overall coverage of all tests, including Cucumber features and RSpec tests, caching and merging results when generating reports. You can view coverage results by opening `coverage/index.html`. You may want to add the `coverage` folder to .gitignore.
